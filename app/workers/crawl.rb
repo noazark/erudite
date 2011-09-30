@@ -47,7 +47,8 @@ class Crawl
       # Loop through all unique terms found on the page
       # and add them to the document's content array
       contents.uniq.each do |term|
-        document.contents.create(term: term, frequency: contents.grep(term).size)
+        content = Content.find_or_create_by(term: term)
+        document.contents.push content
       end
 
       # Update crawled_at time stamp

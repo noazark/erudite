@@ -11,7 +11,7 @@
 
 %p
   - @document.contents.desc(:frequency).each do |content|
-    %a{title: "#{content.frequency}"}= content.term
+    %a= content.term
 
 = link_to 'Edit', edit_document_path(@document)
 \|

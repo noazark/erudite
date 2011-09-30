@@ -10,11 +10,11 @@ class Document
   has_and_belongs_to_many :links, class_name: "Document", inverse_of: :references
   has_and_belongs_to_many :references, class_name: "Document", inverse_of: :links
 
-  embeds_many :contents
+  has_many :contents
 
-  index :title
-  index :uri, unique: true
-  index :crawled_at, unique: true
+  index :title, background: true
+  index :uri, unique: true, background: true
+  index :crawled_at, unique: true, background: true
 
   def self.crawled
     where :title.exists => true
