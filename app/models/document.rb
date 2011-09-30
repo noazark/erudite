@@ -12,10 +12,6 @@ class Document
 
   has_many :contents
 
-  index :title, background: true
-  index :uri, unique: true, background: true
-  index :crawled_at, unique: true, background: true
-
   def self.crawled
     where :title.exists => true
   end
