@@ -23,10 +23,11 @@ class Crawl
 
       contents = page.xpath("//text()").to_s.split
 
-      links.compact.uniq!
-
     ## Save to document
       document.title = title
+
+      # Clearing document links to make room for new list
+      document.links.delete_all
 
       # Create a document for each new link discovered, if the link has already
       # been found, fetch it instead. This reference will be added to our
@@ -35,21 +36,25 @@ class Crawl
       # Once finished, the child will be added to the Passive Crawl Queue, this
       # queue is designed for all lower level crawls that should take precedence
       # below the higher level, Active Crawl Queue.
-      links.each do |link|
+      children = []
+      links.uniq.each do |link|
         child = Document.find_or_create_by(uri: link)
-        document.links.push(child)
+        children << child
         Resque.enqueue(PassiveCrawl, child.id, depth.next) if depth < 3
       end
+      document.links.concat children
 
       # Clearing document contents to make room for new list
       document.contents.delete_all
-
+      
       # Loop through all unique terms found on the page
       # and add them to the document's content array
-      contents.uniq.each do |term|
-        content = Content.find_or_create_by(term: term)
-        document.contents.push content
+      terms = []
+      contents.uniq.each do |content|
+        term = Content.find_or_create_by(term: content)
+        terms << term
       end
+      document.contents.concat terms
 
       # Update crawled_at time stamp
       document.crawled_at = DateTime.now
