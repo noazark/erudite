@@ -4,6 +4,7 @@ class Crawl
   @queue = :active_crawl_queue
 
   def self.perform(document_id, depth = 1)
+    start_at = Time.now
     if depth <= 3
     ## Fetch document
       document = Document.find(document_id)
@@ -55,5 +56,6 @@ class Crawl
       # Save and throw error, so the job will fail
       document.save!
     end
+    p Time.now - start_at
   end
 end
