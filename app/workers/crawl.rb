@@ -3,14 +3,16 @@ require 'open-uri'
 class Crawl
   @queue = :active_crawl_queue
 
-  def self.perform(document_uri, depth = 1)
+  def self.perform(document_uri, depth = 1, force = false)
     start_at = Time.now
     if depth <= 3
       # Create a document, or find it, based on the passed URI.
       document = Document.find_or_create_by(uri: document_uri)
 
       # Check and cancel the crawl if the document has been crawled recently
-      return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
+      unless force
+        return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
+      end
 
       # Grab page contents and remove worthless tags
       page = Nokogiri::HTML(open(URI.parse document.uri))
