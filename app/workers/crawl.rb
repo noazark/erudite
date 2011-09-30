@@ -43,6 +43,10 @@ class Crawl
 
       # Save and throw error, so the job will fail
       document.save!
+      
+      document.links.each do |link|
+        Resque.enqueue(PassiveCrawl, link)
+      end
     end
     p "#{document_uri} - #{Time.now - start_at}"
   end
