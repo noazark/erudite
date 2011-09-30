@@ -1,3 +1,5 @@
-%h3 Home
+%h1 Erudite
+= render 'shared/site_navigation'
+
 - @users.each do |user|
   %p User: #{link_to user.name, user}

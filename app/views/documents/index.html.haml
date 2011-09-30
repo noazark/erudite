@@ -1,0 +1,19 @@
+%h1
+  Listing documents
+  = @documents.total_count
+%p
+  = link_to 'New Document', new_document_path
+
+%br
+
+- @documents.each do |document|
+  %p
+    = link_to document.title, document.uri
+    >
+    = link_to 'Show', document
+    = link_to 'Edit', edit_document_path(document)
+    = link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= paginate @documents

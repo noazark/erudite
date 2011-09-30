@@ -1,0 +1,18 @@
+%h1= @document.title
+= link_to @document.uri, @document.uri
+
+%p
+  - @document.references.each do |reference|
+    = link_to reference.uri, reference
+
+%p
+  - @document.links.asc(:uri).each do |link|
+    = link_to link.uri, link
+
+%p
+  - @document.contents.desc(:frequency).each do |content|
+    %a{title: "#{content.frequency}"}= content.term
+
+= link_to 'Edit', edit_document_path(@document)
+\|
+= link_to 'Back', documents_path
