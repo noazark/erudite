@@ -6,11 +6,9 @@ class Document
   field :title, type: String
   field :uri, type: String
   field :crawled_at, type: DateTime
-
-  has_and_belongs_to_many :links, class_name: "Document", inverse_of: :references
-  has_and_belongs_to_many :references, class_name: "Document", inverse_of: :links
-
-  has_many :contents
+  field :crawl_duration, type: Integer
+  field :links, type: Array
+  field :contents, type: Array
 
   def self.crawled
     where :title.exists => true
