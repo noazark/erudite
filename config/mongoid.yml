@@ -1,6 +1,7 @@
 development:
   host: localhost
   database: erudite_development
+  logger: false
 
 test:
   host: localhost
