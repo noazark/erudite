@@ -1,18 +1,19 @@
 %h1= @document.title
-= link_to @document.uri, @document.uri
+%nav
+  = link_to 'Edit', edit_document_path(@document)
+  \|
+  = link_to 'Back', documents_path
 
+%p= link_to @document.uri, @document.uri
+
+%h2= "Links #{@document.links.length}"
 %p
-  - @document.references.each do |reference|
-    = link_to reference.uri, reference
+  - @document.links.each do |link|
+    = link_to link, link
 
+%h2= "Contents #{@document.contents.length}"
 %p
-  - @document.links.asc(:uri).each do |link|
-    = link_to link.uri, link
+  - @document.contents.each do |content|
+    %a= content
 
-%p
-  - @document.contents.desc(:frequency).each do |content|
-    %a= content.term
 
-= link_to 'Edit', edit_document_path(@document)
-\|
-= link_to 'Back', documents_path

@@ -1,6 +1,4 @@
-%h1
-  Listing documents
-  = @documents.total_count
+%h1= "Documents #{@documents.total_count}"
 %p
   = link_to 'New Document', new_document_path
 
