@@ -3,65 +3,45 @@ require 'open-uri'
 class Crawl
   @queue = :active_crawl_queue
 
-  def self.perform(document_id, depth = 1)
+  def self.perform(document_uri, depth = 1)
     start_at = Time.now
     if depth <= 3
-    ## Fetch document
-      document = Document.find(document_id)
+      # Create a document, or find it, based on the passed URI.
+      document = Document.find_or_create_by(uri: document_uri)
 
+      # Check and cancel the crawl if the document has been crawled recently
       return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
 
-    ## Grab page contents
-      page = Nokogiri::HTML(open(URI.parse document.uri)) 
+      # Grab page contents and remove worthless tags
+      page = Nokogiri::HTML(open(URI.parse document.uri))
       page.xpath("//script").remove
       page.xpath("//style").remove
-      
-      title = page.xpath("//title").first.content rescue nil
-      links = page.xpath("//a").map do |link|
-        URI.parse(link['href']) if link['href'] && link['href'].match(/^http/)
-      end
 
-      contents = page.xpath("//text()").to_s.split
-
-    ## Save to document
-      document.title = title
-
-      # Clearing document links to make room for new list
-      document.links.delete_all
-
-      # Create a document for each new link discovered, if the link has already
-      # been found, fetch it instead. This reference will be added to our
-      # current document's links array.
+      # Save to document
       #
-      # Once finished, the child will be added to the Passive Crawl Queue, this
-      # queue is designed for all lower level crawls that should take precedence
-      # below the higher level, Active Crawl Queue.
-      children = []
-      links.uniq.each do |link|
-        child = Document.find_or_create_by(uri: link)
-        children << child
-        Resque.enqueue(PassiveCrawl, child.id, depth.next) if depth < 3
-      end
-      document.links.concat children
+      # To reduce latency, deffer all possible parsing and interpreting to
+      # separate, threaded, workers. All the content is being saved almost
+      # exactly as it was found on the page, with a few tricks here and there
+      # to break it out into it's pieces
 
-      # Clearing document contents to make room for new list
-      document.contents.delete_all
-      
-      # Loop through all unique terms found on the page
-      # and add them to the document's content array
-      terms = []
-      contents.uniq.each do |content|
-        term = Content.find_or_create_by(term: content)
-        terms << term
+      # Page Title, as found in <head><title>...</title></head>
+      document.title = page.xpath("//title").first.content rescue nil
+
+      # Save all the anchors with href values onto the document
+      document.links = page.xpath("//a").map do |link|
+        link['href'] if link['href']
       end
-      document.contents.concat terms
+
+      # Save all the contents (words) found on the page onto the document
+      document.contents = page.xpath("//text()").to_s.split
 
       # Update crawled_at time stamp
       document.crawled_at = DateTime.now
+      document.crawl_duration = Time.now - start_at
 
       # Save and throw error, so the job will fail
       document.save!
     end
-    p Time.now - start_at
+    p "#{document_uri} - #{Time.now - start_at}"
   end
 end

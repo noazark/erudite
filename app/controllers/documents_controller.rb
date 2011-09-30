@@ -43,9 +43,9 @@ class DocumentsController < ApplicationController
     @document = Document.new(params[:document])
 
     respond_to do |format|
-      if @document.save
-        Resque.enqueue(Crawl, @document.id)
-        format.html { redirect_to @document, notice: 'Document was successfully created.' }
+      if @document.valid?
+        Resque.enqueue(Crawl, @document.uri)
+        format.html { redirect_to @document, notice: 'Document has been added to queue.' }
         format.json { render json: @document, status: :created, location: @document }
       else
         format.html { render action: "new" }
@@ -58,11 +58,12 @@ class DocumentsController < ApplicationController
   # PUT /documents/1.json
   def update
     @document = Document.find(params[:id])
+    @document.attributes = params[:document]
 
     respond_to do |format|
-      if @document.update_attributes(params[:document])
-        Resque.enqueue(Crawl, @document.id)
-        format.html { redirect_to @document, notice: 'Document was successfully updated.' }
+      if @document.valid?
+        Resque.enqueue(Crawl, @document.uri)
+        format.html { redirect_to @document, notice: 'Document has been added to queue.' }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
