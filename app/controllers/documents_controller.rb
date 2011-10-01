@@ -62,7 +62,7 @@ class DocumentsController < ApplicationController
 
     respond_to do |format|
       if @document.valid?
-        Resque.enqueue(Cache, @document.uri, 1, true)
+        Resque.enqueue(Cache, @document.uri, true)
         format.html { redirect_to @document, notice: 'Document has been added to queue.' }
         format.json { head :ok }
       else
