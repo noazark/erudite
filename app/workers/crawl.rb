@@ -42,7 +42,7 @@ class Crawl
       # Save and throw error, so the job will fail
       document.save!
 
-      uri = URI.parse(document_uri)
+      uri = URI.parse(document.uri)
 
       document.links.each do |link|
         path = URI.parse(link)
