@@ -9,6 +9,8 @@ class Document
   field :crawl_duration, type: Integer
   field :links, type: Array
   field :contents, type: Array
+  
+  field:_cache
 
   def self.crawled
     where :title.exists => true
