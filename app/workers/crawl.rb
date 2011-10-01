@@ -31,7 +31,7 @@ class Crawl
 
       # Save all the anchors with href values onto the document
       document.links = page.xpath("//a").map do |link|
-        link['href'] if link['href']
+        link['href'] if link['href'] && !link['href'].empty?
       end
 
       # Save all the contents (words) found on the page onto the document
