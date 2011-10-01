@@ -9,10 +9,11 @@ class Crawl
       # Create a document, or find it, based on the passed URI.
       document = Document.find(document_id)
 
-      # Check and cancel the crawl if the document has been crawled recently
-      #unless force
-      #  return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
-      #end
+      # If the document hasn't been cached recently, cache it.
+      if document.cached_at && document.cached_at <= Time.now - 6.hours
+        Resque.enqueue(Cache, document.uri)
+        return
+      end
 
       # Grab page contents and remove worthless tags
       page = Nokogiri::HTML(document._cache)
