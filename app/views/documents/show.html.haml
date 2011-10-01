@@ -4,7 +4,7 @@
   \|
   = link_to 'Back', documents_path
 
-%p= link_to @document.uri, @document.uri
+%p= link_to @document.uri, @document.uri, target: '_blank'
 
 %h2= "Links #{@document.links.length}"
 %p
@@ -15,5 +15,3 @@
 %p
   - @document.contents.each do |content|
     %a= content
-
-

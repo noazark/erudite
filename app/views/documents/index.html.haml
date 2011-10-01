@@ -6,7 +6,7 @@
 
 - @documents.each do |document|
   %p
-    = link_to document.title, document.uri
+    = link_to document.title, document.uri, target: '_blank'
     >
     = link_to 'Show', document
     = link_to 'Edit', edit_document_path(document)
