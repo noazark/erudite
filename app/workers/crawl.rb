@@ -3,11 +3,11 @@ require 'open-uri'
 class Crawl
   @queue = :active_crawl_queue
 
-  def self.perform(document_uri, depth = 1, force = false)
+  def self.perform(document_id, depth = 1, force = false)
     start_at = Time.now
     if depth <= 3
       # Create a document, or find it, based on the passed URI.
-      document = Document.find_or_create_by(uri: document_uri)
+      document = Document.find(document_id)
 
       # Check and cancel the crawl if the document has been crawled recently
       #unless force

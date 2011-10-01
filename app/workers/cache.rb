@@ -24,6 +24,8 @@ class Cache
 
     document.save!
 
+    Resque.enqueue(Crawl, document.id)
+
     p "#{document_uri} - #{Time.now - start_at}"
   end
 end
