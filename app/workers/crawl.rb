@@ -43,9 +43,13 @@ class Crawl
 
       # Save and throw error, so the job will fail
       document.save!
-      
+
+      uri = URI.parse(document_uri)
+
       document.links.each do |link|
-        Resque.enqueue(PassiveCrawl, link)
+        path = URI.parse(link)
+        path = uri.merge(path) if path.relative?
+        Resque.enqueue(PassiveCrawl, path.to_s, depth.next) if depth < 3
       end
     end
     p "#{document_uri} - #{Time.now - start_at}"
