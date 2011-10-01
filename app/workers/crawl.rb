@@ -1,7 +1,7 @@
 require 'open-uri'
 
 class Crawl
-  @queue = :active_crawl_queue
+  @queue = :crawl_queue
 
   def self.perform(document_id, depth = 1, force = false)
     start_at = Time.now
@@ -48,7 +48,7 @@ class Crawl
         path = URI.parse(link)
         path = uri.merge(path) if path.relative?
         path = URI.escape(path.to_s)
-        Resque.enqueue(PassiveCrawl, path, depth.next) if depth < 3
+        Resque.enqueue(Cache, path, depth.next) if depth < 3
       end
     end
     p "crawled: #{document.uri} - #{Time.now - start_at}"
