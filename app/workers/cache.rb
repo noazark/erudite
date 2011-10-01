@@ -26,7 +26,7 @@ class Cache
 
     Resque.enqueue(Crawl, document.id)
 
-    p "#{document_uri} - #{Time.now - start_at}"
+    p "cached: #{document_uri} - #{Time.now - start_at}"
   end
 end
 

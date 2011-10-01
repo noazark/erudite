@@ -51,6 +51,6 @@ class Crawl
         Resque.enqueue(PassiveCrawl, path, depth.next) if depth < 3
       end
     end
-    p "#{document_uri} - #{Time.now - start_at}"
+    p "crawled: #{document.uri} - #{Time.now - start_at}"
   end
 end
