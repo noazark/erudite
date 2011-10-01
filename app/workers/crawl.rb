@@ -10,14 +10,12 @@ class Crawl
       document = Document.find_or_create_by(uri: document_uri)
 
       # Check and cancel the crawl if the document has been crawled recently
-      unless force
-        return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
-      end
+      #unless force
+      #  return if document.crawled_at && document.crawled_at >= Time.now - 6.hours
+      #end
 
       # Grab page contents and remove worthless tags
-      page = Nokogiri::HTML(open(URI.parse document.uri))
-      page.xpath("//script").remove
-      page.xpath("//style").remove
+      page = Nokogiri::HTML(document._cache)
 
       # Save to document
       #
@@ -49,7 +47,8 @@ class Crawl
       document.links.each do |link|
         path = URI.parse(link)
         path = uri.merge(path) if path.relative?
-        Resque.enqueue(PassiveCrawl, path.to_s, depth.next) if depth < 3
+        path = URI.escape(path.to_s)
+        Resque.enqueue(PassiveCrawl, path, depth.next) if depth < 3
       end
     end
     p "#{document_uri} - #{Time.now - start_at}"
