@@ -2,7 +2,9 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.json
   def index
-    @documents = Document.crawled.asc(:title).page(params[:page])
+    @documents = Document.search params[:search],
+                   page: params[:page],
+                   per_page: params[:per_page] rescue
 
     respond_to do |format|
       format.html # index.html.erb
