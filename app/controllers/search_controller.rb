@@ -1,9 +1,12 @@
 class SearchController < ApplicationController
   def show
     query = params[:search]
-    @results = Document.search page: params[:page], per_page: params[:per_page] do
-      query do
-        string query
+    
+    if !query.blank?
+      @results = Document.search page: params[:page], per_page: params[:per_page] do
+        query do
+          string query
+        end
       end
     end
 
