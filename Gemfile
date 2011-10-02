@@ -45,4 +45,4 @@ gem "devise", ">= 1.4.5"
 gem "resque", require: "resque/server"
 gem "nokogiri"
 gem 'kaminari'
-gem "tire", git: "git://github.com/karmi/tire.git"
+gem "tire"
