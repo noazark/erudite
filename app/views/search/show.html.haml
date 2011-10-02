@@ -1,6 +1,6 @@
 %h1= "Search #{@documents.total_count rescue ''}"
 
-= form_tag documents_path, :method => :get do
+= form_tag search_path, :method => :get do
   %p
     = text_field_tag :search, params[:search]
     = submit_tag "Search", name: nil
