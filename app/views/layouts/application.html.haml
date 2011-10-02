@@ -1,7 +1,7 @@
 !!! 5
 %html
   %head
-    %title erudite
+    %title= "erudite #{" | #{yield(:title)}" if content_for?(:title)}"
     = stylesheet_link_tag :application
     = javascript_include_tag :application
     = csrf_meta_tags
