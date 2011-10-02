@@ -1,0 +1,11 @@
+development:
+  :crawler:
+    :penetration_depth: 2
+
+test:
+  :crawler:
+    :penetration_depth: 2
+
+production:
+  :crawler:
+    :penetration_depth: 3
