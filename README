@@ -4,6 +4,5 @@
 
 ### elasticsearch Installation
 
-Please follow (Setting up elasticsearch on Debian)[http://www.elasticsearch.org/tutorials/2010/07/02/setting-up-elasticsearch-on-debian.html]
-for setup instructions. Once finished, simply `$ rake environment tire:import
-CLASS="Document"` to index all your docs.
+Please follow [Setting up elasticsearch on Debian](http://www.elasticsearch.org/tutorials/2010/07/02/setting-up-elasticsearch-on-debian.html)
+for setup instructions. Once finished, simply `$ rake environment tire:import CLASS="Document"` to index all your docs.
