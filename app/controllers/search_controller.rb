@@ -1,8 +1,11 @@
 class SearchController < ApplicationController
   def show
-    @documents = Document.search params[:search],
-                   page: params[:page],
-                   per_page: params[:per_page] rescue
+    query = params[:search]
+    @results = Document.search page: params[:page], per_page: params[:per_page] do
+      query do
+        string query
+      end
+    end
 
     respond_to do |format|
       format.html

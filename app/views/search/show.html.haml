@@ -1,4 +1,4 @@
-%h1= "Search #{@documents.total_count rescue ''}"
+%h1= "Search #{@results.total_count rescue ''}"
 
 = form_tag search_path, :method => :get do
   %p
@@ -7,8 +7,8 @@
 
 %br
 
-- if (@documents.length > 0 rescue false)
-  - @documents.each do |document|
+- if (@results.length > 0 rescue false)
+  - @results.each do |document|
     %p
       = link_to document.title, document.uri, target: '_blank'
       >
@@ -18,7 +18,7 @@
 
   %br
   - begin
-    = paginate @documents
+    = paginate @results
   - rescue
 
 - elsif !params[:search].blank?
