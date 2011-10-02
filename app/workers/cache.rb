@@ -24,7 +24,7 @@ class Cache
 
       document.save!
 
-      Resque.enqueue(Crawl, document.id, depth)
+      Resque.enqueue(Crawl, document.id, depth, force)
     end
     p "cached: #{document_uri} - #{Time.now - start_at}"
   end
