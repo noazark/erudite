@@ -46,3 +46,7 @@ gem "resque", require: "resque/server"
 gem "nokogiri"
 gem 'kaminari'
 gem "tire"
+
+group :development do
+  gem 'nifty-generators'
+end
