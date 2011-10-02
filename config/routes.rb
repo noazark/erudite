@@ -2,7 +2,7 @@ Erudite::Application.routes.draw do
   resources :documents
 
   get :dashboard, controller: "Dashboard", action: :index
-  get :search, controller: "Search", action: :index
+  get :search, controller: "Search", action: :show
 
   #get \"users\/show\"
 
