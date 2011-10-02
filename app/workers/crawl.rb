@@ -46,10 +46,13 @@ class Crawl
       uri = URI.parse(document.uri)
 
       document.links.each do |link|
-        path = URI.parse(link)
-        path = uri.merge(path) if path.relative?
-        path = URI.escape(path.to_s)
-        Resque.enqueue(Cache, path, depth.next) if depth < APP_CONFIG[:crawler][:penetration_depth]
+        begin
+          path = URI.parse(link)
+          path = uri.merge(path) if path.relative?
+          path = URI.escape(path.to_s)
+          Resque.enqueue(Cache, path, depth.next) if depth < APP_CONFIG[:crawler][:penetration_depth]
+        rescue
+        end
       end
     end
     p "crawled: #{document.uri} - #{Time.now - start_at}"
