@@ -4,7 +4,7 @@ class Document
   include Mongoid::Paranoia
 
   include Tire::Model::Search
-  include Tire::Model::Callbacks
+  #include Tire::Model::Callbacks
 
   field :title, type: String
   field :uri, type: String
@@ -24,7 +24,7 @@ class Document
   end
 
   def self.crawled
-    where :title.exists => true
+    where :crawled_at.exists => true
   end
 
   def to_indexed_json
