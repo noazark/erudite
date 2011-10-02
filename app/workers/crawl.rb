@@ -5,7 +5,7 @@ class Crawl
 
   def self.perform(document_id, depth = 1, force = false)
     start_at = Time.now
-    if depth <= 3
+    if depth <= APP_CONFIG[:crawler][:penetration_depth]
       # Create a document, or find it, based on the passed URI.
       document = Document.find(document_id)
 
@@ -49,7 +49,7 @@ class Crawl
         path = URI.parse(link)
         path = uri.merge(path) if path.relative?
         path = URI.escape(path.to_s)
-        Resque.enqueue(Cache, path, depth.next) if depth < 3
+        Resque.enqueue(Cache, path, depth.next) if depth < APP_CONFIG[:crawler][:penetration_depth]
       end
     end
     p "crawled: #{document.uri} - #{Time.now - start_at}"
