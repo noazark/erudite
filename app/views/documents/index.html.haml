@@ -1,4 +1,4 @@
-%h1= "Documents #{@documents.total_count}"
+%h1= "Documents #{@documents.total_count rescue ''}"
 %p
   = link_to 'New Document', new_document_path
 
@@ -9,14 +9,21 @@
 
 %br
 
-- @documents.each do |document|
+- if (@documents.length > 0 rescue false)
+  - @documents.each do |document|
+    %p
+      = link_to document.title, document.uri, target: '_blank'
+      >
+      = link_to 'Show', document
+      = link_to 'Edit', edit_document_path(document)
+      = link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete
+
+  %br
+  - begin
+    = paginate @documents
+  - rescue
+
+- elsif !params[:search].blank?
   %p
-    = link_to document.title, document.uri, target: '_blank'
-    >
-    = link_to 'Show', document
-    = link_to 'Edit', edit_document_path(document)
-    = link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= paginate @documents
+    %em= params[:search]
+    did not return any results
