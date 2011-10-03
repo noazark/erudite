@@ -9,6 +9,7 @@ class Cache
       reference = Document.first(conditions: { uri: link })
       Document.references << reference
     end
+    p "#{document.title}: #{document.references.length} references"
   end
 end
 
