@@ -65,11 +65,9 @@ class DocumentsController < ApplicationController
         if params[:cache]
           message = "Now caching document."
           Resque.enqueue(Cache, @document.uri, 1, true)
-
         elsif params[:build_genealogy]
           #message = "Now building genealogy."
           #Resque.enqueue(BuildGenealogy, @document.id, 1, true)
-
         end
 
         format.html { redirect_to @document, notice: 'Document has been added to queue. #{message}' }
