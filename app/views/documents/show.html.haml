@@ -2,7 +2,11 @@
 
 %h2= @document.title
 %nav
-  = link_to 'Edit', edit_document_path(@document)
+  = form_for @document do |f|
+    /button for cache
+    = submit_tag "cache", :name => :cache
+    /button for build genealogy
+    = submit_tag "build genealogy", :name => :build_genealogy
 
 %p= link_to @document.uri, @document.uri, target: '_blank'
 
