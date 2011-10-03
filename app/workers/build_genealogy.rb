@@ -7,7 +7,7 @@ class BuildGenealogy
     document = Document.find(document_id)
     document.links.each do |link|
       reference = Document.first(conditions: { uri: link })
-      Document.references << reference
+      document.references << reference
     end
     p "#{document.title}: #{document.references.length} references"
   end
