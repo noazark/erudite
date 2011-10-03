@@ -27,6 +27,14 @@ class Document
     super || self.uri
   end
 
+  def as_json(options = nil)
+    level = options[:level] rescue 1
+    levels = options[:levels] rescue APP_CONFIG[:crawler][:penetration_depth]
+
+    #options.merge { include: :links } if level < levels
+    attributes.as_json(options)
+  end
+
   def to_indexed_json
     self.to_json
   end
