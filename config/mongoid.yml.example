@@ -1,11 +1,11 @@
 development:
   host: localhost
-  database: erudite_development
+  database: application_development
   logger: false
 
 test:
   host: localhost
-  database: erudite_test
+  database: application_test
 
 # set these environment variables on your prod server
 production:
