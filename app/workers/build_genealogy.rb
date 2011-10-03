@@ -1,7 +1,7 @@
 require 'open-uri'
 
 class BuildGenealogy
-  @queue = :cache_queue
+  @queue = :genealogy_queue
 
   def self.perform(document_id, force = false)
     document = Document.find(document_id)
