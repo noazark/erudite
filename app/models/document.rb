@@ -17,6 +17,9 @@ class Document
   field :cached_at, type: DateTime
   field :crawled_at, type: DateTime
 
+  has_and_belongs_to_many :references, class_name: "Document", inverse_of: :referenced_by
+  has_and_belongs_to_many :referenced_by, class_name: "Document", inverse_of: :references
+
   index_name 'mongo-documents'
   mapping do
     indexes :title, :type => 'string', :analyzer => 'snowball', :boost => 100
