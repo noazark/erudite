@@ -12,7 +12,15 @@ class Cache
       # Check and cancel the crawl if the document has been crawled recently
       if !document.cached_at || document.cached_at <= Time.now - 6.hours
         # Grab page contents and remove worthless tags
-        page = Nokogiri::HTML(open(URI.parse(document.uri)))
+        begin
+          page = Nokogiri::HTML(open(URI.parse(document.uri)))
+        rescue Net::HTTPServerError, Net::HTTPClientError
+          p "destroy: #{document_uri} - #{Time.now - start_at}"
+          document.destroy
+        rescue
+          p "failed: #{document_uri} - #{Time.now - start_at}"
+          return
+        end
         page.xpath("//script").remove
         page.xpath("//style").remove
 
