@@ -1,18 +1,12 @@
 - title "documents"
 
-%h1= "Documents #{@documents.total_count}"
+%h2= "Documents #{@documents.total_count}"
 %p
   = link_to 'New Document', new_document_path
 
 %br
 
-- @documents.each do |document|
-  %p
-    = link_to document.title, document.uri, target: '_blank'
-    >
-    = link_to 'Show', document
-    = link_to 'Edit', edit_document_path(document)
-    = link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete
+= render partial: 'list_item', collection: @documents
 
 %br
 

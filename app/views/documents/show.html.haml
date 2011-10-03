@@ -1,19 +1,17 @@
 - title @document.title
 
-%h1= @document.title
+%h2= @document.title || @document.uri
 %nav
   = link_to 'Edit', edit_document_path(@document)
-  \|
-  = link_to 'Back', documents_path
 
 %p= link_to @document.uri, @document.uri, target: '_blank'
 
-%h2= "Links #{@document.links.length}"
+%h3= "Links #{@document.links.length}"
 %p
   - @document.links.each do |link|
     = link_to link, link
 
-%h2= "Contents #{@document.contents.length}"
+%h3= "Contents #{@document.contents.length}"
 %p
   - @document.contents.each do |content|
     %a= content

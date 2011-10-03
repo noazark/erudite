@@ -1,27 +1,15 @@
 - title "search"
 
-%h1= "Search #{@results.total_count rescue ''}"
+- if @results && @results.length > 0
+  %h2= "Results #{@results.total_count}"
 
-= form_tag search_path, :method => :get do
-  %p
-    = text_field_tag :search, params[:search]
-    = submit_tag "Search", name: nil
+  - if (@results.length > 0 rescue false)
+    = render partial: 'documents/list_item', collection: @results
 
-%br
-
-- if (@results.length > 0 rescue false)
-  - @results.each do |document|
-    %p
-      = link_to document.title, document.uri, target: '_blank'
-      >
-      = link_to 'Show', document
-      = link_to 'Edit', edit_document_path(document)
-      = link_to 'Destroy', document, :confirm => 'Are you sure?', :method => :delete
-
-  %br
-  - begin
-    = paginate @results
-  - rescue
+    %br
+    - begin
+      = paginate @results
+    - rescue
 
 - elsif !params[:search].blank?
   %p
