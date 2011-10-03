@@ -61,7 +61,7 @@ class DocumentsController < ApplicationController
     @document.attributes = params[:document]
 
     respond_to do |format|
-      if @document.valid?
+      if @document.save
         if params[:cache]
           message = "Now caching document."
           Resque.enqueue(Cache, @document.uri, 1, true)
