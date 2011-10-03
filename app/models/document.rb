@@ -23,6 +23,10 @@ class Document
     indexes :uri, :type => 'string', :analyzer => 'snowball'
   end
 
+  def title
+    super || self.uri
+  end
+
   def self.crawled
     where :crawled_at.exists => true
   end
@@ -35,3 +39,4 @@ class Document
     page(options[:page]).per(options[:per_page])
   end
 end
+
