@@ -1,6 +1,6 @@
 require 'open-uri'
 
-class Cache
+class BuildGenealogy
   @queue = :cache_queue
 
   def self.perform(document_id, force = false)
