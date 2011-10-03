@@ -27,12 +27,12 @@ class Document
     super || self.uri
   end
 
-  def self.crawled
-    where :crawled_at.exists => true
-  end
-
   def to_indexed_json
     self.to_json
+  end
+
+  def self.crawled
+    where :crawled_at.exists => true
   end
 
   def self.paginate(options = {})
