@@ -47,6 +47,7 @@ gem "nokogiri"
 gem 'kaminari'
 gem "tire"
 gem "jquery-tmpl-rails"
+gem "jquery-historyjs"
 
 group :development do
   gem 'nifty-generators'
