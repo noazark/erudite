@@ -46,6 +46,7 @@ gem "resque", require: "resque/server"
 gem "nokogiri"
 gem 'kaminari'
 gem "tire"
+gem "jquery-tmpl-rails"
 
 group :development do
   gem 'nifty-generators'
