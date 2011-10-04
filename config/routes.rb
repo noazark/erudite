@@ -6,7 +6,7 @@ Erudite::Application.routes.draw do
 
   #get \"users\/show\"
 
-  root :to => "home#index"
+  root :to => "search#show"
 
   devise_for :users
   resources :users, :only => :show
