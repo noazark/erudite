@@ -6,6 +6,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require history
 //= require jquery-tmpl
 //= require_tree .
 //= require tmpl/search
