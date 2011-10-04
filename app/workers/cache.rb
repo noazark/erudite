@@ -14,11 +14,9 @@ class Cache
         # Grab page contents and remove worthless tags
         begin
           page = Nokogiri::HTML(open(URI.parse(document.uri)))
-        rescue Net::HTTPServerError, Net::HTTPClientError
+        rescue Net::HTTPServerError, Net::HTTPClientError, OpenURI::HTTPError
           p "destroy: #{document_uri} - #{Time.now - start_at}"
           document.destroy
-        rescue
-          p "failed: #{document_uri} - #{Time.now - start_at}"
           return
         end
         page.xpath("//script").remove
