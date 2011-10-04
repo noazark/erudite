@@ -9,7 +9,7 @@ class BuildGenealogy
       reference = Document.first(conditions: { uri: link })
       document.references << reference
     end
-    p "#{document.title}: #{document.references.length} references"
+    p "#{document.title}: #{document.references.length} references, #{document.referenced_by.length} referenced_by"
   end
 end
 
