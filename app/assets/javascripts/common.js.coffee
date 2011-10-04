@@ -1,11 +1,18 @@
+History = window.History
 $ ->
   requests = []
+  url = ""
   $("#search").keyup ->
-    i = 0
-    while i < requests.length
-      requests[i].abort()
-      i++
+    $.each(requests, ((i, request)->
+      request.abort()
+    ))
 
-    requests.push $.getJSON $("#search_form").attr("action"), $("#search_form").serialize(), ((data)->
-      $("#search_results").html($.tmpl('tmpl/search', data))
-    ), "script"
+    $.rails.handleRemote $("#search_form")
+
+  $("#search_form").bind "ajax:beforeSend", (event, xhr, settings) ->
+    requests.push xhr
+    url = settings.url
+
+  $("#search_form").bind "ajax:success", (event, data, status, xhr) ->
+    $("#search_results").html $.tmpl("tmpl/search", data)
+    History.pushState null, null, url
