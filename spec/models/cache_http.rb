@@ -14,7 +14,7 @@ describe CacheHTTP do
     stub_request(:get, uri).to_return(:body => response_body)
   end
 
-  it "creates a cached document from the response" do
+  it "creates a cached document" do
     CacheHTTP.perform(uri)
     Document.find(uri).should_not be_nil
   end
