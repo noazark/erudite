@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe CacheURI do
+describe CacheHTTP do
 
   let(:uri) do
     "http://example.com"
@@ -15,24 +15,24 @@ describe CacheURI do
   end
 
   it "creates a cached document from the response" do
-    CacheURI.perform(uri)
+    CacheHTTP.perform(uri)
     Document.find(uri).should_not be_nil
   end
 
   it "updates an already cached document" do
     original = Document.create! uri: uri, body: 'foo bar'
-    cached = CacheURI.perform(uri)
+    cached = CacheHTTP.perform(uri)
 
     original.reload
     cached.should eql original
   end
   
   it "makes an http request to the uri" do
-    CacheURI.perform(uri).body.should eq response_body
+    CacheHTTP.perform(uri).body.should eq response_body
   end
   
   it "returns the cached document" do
-    CacheURI.perform(uri).should be_a Document
+    CacheHTTP.perform(uri).should be_a Document
   end
 
 end

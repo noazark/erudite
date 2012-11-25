@@ -1,6 +1,6 @@
 require 'net/http'
 
-class CacheURI
+class CacheHTTP
 
   def self.perform(uri)
     cache_document(uri)
