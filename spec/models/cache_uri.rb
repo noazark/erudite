@@ -22,5 +22,9 @@ describe CacheURI do
   it "makes an http request to the uri" do
     CacheURI.perform(uri).body.should eq response_body
   end
+  
+  it "returns the cached document" do
+    CacheURI.perform(uri).should be_a Document
+  end
 
 end
