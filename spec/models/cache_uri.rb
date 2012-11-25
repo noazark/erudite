@@ -6,8 +6,12 @@ describe CacheURI do
     "http://example.com"
   end
 
+  let(:response_body) do
+    "hello world"
+  end
+
   before do
-    stub_request(:get, uri).to_return(:body => "hello world")
+    stub_request(:get, uri).to_return(:body => response_body)
   end
 
   it "creates a cached document from the response" do
@@ -16,8 +20,7 @@ describe CacheURI do
   end
   
   it "makes an http request to the uri" do
-    stub_request(:get, uri).to_return(:body => "hello world")
-    CacheURI.perform(uri).body.should eq "hello world"
+    CacheURI.perform(uri).body.should eq response_body
   end
 
 end
