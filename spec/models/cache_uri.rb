@@ -18,6 +18,14 @@ describe CacheURI do
     CacheURI.perform(uri)
     Document.find(uri).should_not be_nil
   end
+
+  it "updates an already cached document" do
+    original = Document.create! uri: uri, body: 'foo bar'
+    cached = CacheURI.perform(uri)
+
+    original.reload
+    cached.should eql original
+  end
   
   it "makes an http request to the uri" do
     CacheURI.perform(uri).body.should eq response_body
