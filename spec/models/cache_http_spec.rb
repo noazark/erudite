@@ -29,11 +29,11 @@ describe CacheHTTP do
   end
 
   it "updates an already cached document" do
-    original = Document.create! uri: uri, body: 'foo bar'
+    original = HTTPDocument.create! uri: uri, body: 'foo bar'
     cached = CacheHTTP.perform(uri)
 
     original.reload
-    cached.should eql original
+    cached.should eq original
   end
   
   it "sets the document headers" do
@@ -44,8 +44,8 @@ describe CacheHTTP do
     CacheHTTP.perform(uri).body.should eq response_body
   end
   
-  it "returns the cached document" do
-    CacheHTTP.perform(uri).should be_a Document
+  it "returns the cached http document" do
+    CacheHTTP.perform(uri).should be_a HTTPDocument
   end
 
 end

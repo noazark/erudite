@@ -16,4 +16,8 @@ describe Document do
     should validate_uniqueness_of :uri
   end
 
+  it "is always eligible for cache" do
+    subject.eligible_for_cache?.should be_true
+  end
+
 end

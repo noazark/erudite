@@ -5,5 +5,8 @@ class Document
   field :uri, type: String
 
   validates :uri, presence: true, uniqueness: true
-end
 
+  def eligible_for_cache?
+    true
+  end
+end

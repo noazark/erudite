@@ -14,12 +14,15 @@ private
 
   def self.cache_document(uri)
     document = Document.find_or_initialize_by uri: uri
+    document = document.becomes HTTPDocument
 
-    response = fetch(uri)
-    
-    document.update_attributes uri: uri,
-      headers: response.to_hash,
-      body: response.body
+    if document.eligible_for_cache?
+      response = fetch(uri)
+
+      document.update_attributes uri: uri,
+        headers: response.to_hash,
+        body: response.body
+    end
 
     document
   end
