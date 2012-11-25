@@ -21,6 +21,7 @@ tmp/*
 **.war
 *.rbc
 *.sassc
+.rake_tasks~
 .rspec
 .redcar/
 .sass-cache
