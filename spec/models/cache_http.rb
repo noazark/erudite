@@ -6,12 +6,21 @@ describe CacheHTTP do
     "http://example.com"
   end
 
+  let(:response_headers) do
+    {
+      "x-idk" => ["..."]
+    }
+  end
+
   let(:response_body) do
     "hello world"
   end
 
   before do
-    stub_request(:get, uri).to_return(:body => response_body)
+    stub_request(:get, uri).to_return(
+      :headers => response_headers,
+      :body => response_body
+    )
   end
 
   it "creates a cached document" do
@@ -27,7 +36,11 @@ describe CacheHTTP do
     cached.should eql original
   end
   
-  it "makes an http request to the uri" do
+  it "sets the document headers" do
+    CacheHTTP.perform(uri).headers.should eq response_headers
+  end
+  
+  it "sets the document body" do
     CacheHTTP.perform(uri).body.should eq response_body
   end
   

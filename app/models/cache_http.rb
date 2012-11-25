@@ -17,7 +17,10 @@ private
 
     response = fetch(uri)
     
-    document.update_attributes uri: uri, body: response.body
+    document.update_attributes uri: uri,
+      headers: response.to_hash,
+      body: response.body
+
     document
   end
 
