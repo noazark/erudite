@@ -12,10 +12,8 @@ describe Document do
     should validate_presence_of :uri
   end
 
-  describe "cache" do
-    
-    it "gets the contents at the URI"
-
+  it "requires a unique uri" do
+    should validate_uniqueness_of :uri
   end
 
 end
