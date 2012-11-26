@@ -17,10 +17,20 @@ describe CacheHTTP do
   end
 
   before do
+    Timecop.freeze
+
     stub_request(:get, uri).to_return(
       :headers => response_headers,
       :body => response_body
     )
+  end
+
+  after do
+    Timecop.return
+  end
+
+  it "updates the crawl timestamp" do
+    CacheHTTP.perform(uri).cached_at.should eq Time.now
   end
 
   it "creates a cached document" do

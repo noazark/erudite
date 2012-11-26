@@ -24,6 +24,9 @@ private
         body: response.body
     end
 
+    document[:cached_at] = Time.now
+    document.save
+
     document
   end
 
