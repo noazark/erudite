@@ -2,7 +2,12 @@ class Document
   include Mongoid::Document
 
   field :_id, type: String, default: ->{ uri.to_s }
+  field :slug, type: String, default: ->{ Digest::SHA1.hexdigest id }
   field :uri, type: URIField
+
+  def to_param
+    slug
+  end
 
   validates :uri, presence: true, uniqueness: true, format: {with: URI::regexp}
 

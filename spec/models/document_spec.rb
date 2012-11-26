@@ -14,6 +14,12 @@ describe Document do
     subject.id.should eq 'http://example.com/'
   end
 
+  it "generates a URI safe slug" do
+    uri = 'http://example.com'
+    subject = Document.new uri: uri
+    subject.slug.should eq Digest::SHA1.hexdigest 'http://example.com/'
+  end
+
   it "requires a uri" do
     should validate_presence_of :uri
   end
