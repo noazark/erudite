@@ -69,14 +69,14 @@ describe CrawlHTTP do
   end
 
   it "increments depth of spawns" do
-    Document.create uri: 'http://example.com/another', body: '<a href="/sup"></a>'
-    CrawlHTTP.perform('http://example.com/another')
-    Resque.pop(:cache_queue)['args'][0].should eq 'http://example.com/sup'
+    CrawlHTTP.perform(uri, 2)
+    Resque.pop(:cache_queue)['args'][1].should eq 3
   end
 
   it "normalizes uri for spawn" do
-    CrawlHTTP.perform(uri, 2)
-    Resque.pop(:cache_queue)['args'][1].should eq 3
+    Document.create uri: 'http://example.com/another', body: '<a href="/sup"></a>'
+    CrawlHTTP.perform('http://example.com/another')
+    Resque.pop(:cache_queue)['args'][0].should eq 'http://example.com/sup'
   end
 
   it "raises an error if the maximum depth has been reached" do
