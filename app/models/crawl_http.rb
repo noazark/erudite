@@ -19,7 +19,7 @@ class CrawlHTTP
 private
 
   def self.crawl_document(uri)
-    document = Document.find uri
+    document = Document.find_by uri: uri
 
     page = Nokogiri::HTML(document.body)
 

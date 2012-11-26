@@ -1,9 +1,8 @@
 class Document
   include Mongoid::Document
 
-  field :_id, type: String, default: ->{ URI.parse(uri).normalize.to_s rescue nil }
-
-  field :uri, type: String
+  field :_id, type: String, default: ->{ uri.to_s }
+  field :uri, type: URIField
 
   validates :uri, presence: true, uniqueness: true, format: {with: URI::regexp}
 
