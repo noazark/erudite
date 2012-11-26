@@ -56,12 +56,17 @@ describe CrawlHTTP do
   end
 
   it "converts link URIs from relative to absolute" do
-    CrawlHTTP.normalize_link('/test', 'http://example.com/page')
+    CrawlHTTP.normalize_path('', 'http://example.com')
+      .should eq 'http://example.com/'
+  end
+
+  it "normalizes links" do
+    CrawlHTTP.normalize_path('/test', 'http://example.com/page')
       .should eq 'http://example.com/test'
   end
 
   it "escapes links for primetime" do
-    CrawlHTTP.normalize_link('http://ahh.com/search?q=Show me the money', 'http://example.com/page')
+    CrawlHTTP.normalize_path('http://ahh.com/search?q=Show me the money', 'http://example.com/page')
       .should eq 'http://ahh.com/search?q=Show%20me%20the%20money'
   end
 

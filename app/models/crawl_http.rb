@@ -10,8 +10,9 @@ class CrawlHTTP
     end.compact.delete_if &:empty?
   end
 
-  def self.normalize_link(path, uri)
+  def self.normalize_path(path, uri)
     URI.join(uri, URI.escape(path))
+      .normalize
       .to_s
   end
 
@@ -26,7 +27,7 @@ private
     document.save
 
     links(page).map do |link|
-      normalize_link link, uri
+      normalize_path link, uri
     end
   end
 
