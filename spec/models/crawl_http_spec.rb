@@ -65,7 +65,7 @@ describe CrawlHTTP do
       .should eq 'http://ahh.com/search?q=Show%20me%20the%20money'
   end
 
-  it "normalizes uri for spawn" do
+  it "normalizes each uri" do
     Document.create uri: 'http://example.com/another', body: '<a href="/sup"></a>'
     CrawlHTTP.perform('http://example.com/another').pop.should eq 'http://example.com/sup'
   end
