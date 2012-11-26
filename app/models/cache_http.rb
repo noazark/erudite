@@ -19,8 +19,7 @@ private
     if document.eligible_for_cache?
       response = fetch(uri)
 
-      document.update_attributes uri: uri,
-        headers: response.to_hash,
+      document.update_attributes headers: response.to_hash,
         body: response.body
     end
 
