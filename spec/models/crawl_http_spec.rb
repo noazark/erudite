@@ -3,7 +3,7 @@ require "spec_helper"
 describe CrawlHTTP do
 
   let(:uri) do
-    'http://example.com'
+    'http://example.com/'
   end
 
   let(:html) do

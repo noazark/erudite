@@ -3,7 +3,7 @@ require "spec_helper"
 describe CacheHTTP do
 
   let(:uri) do
-    "http://example.com"
+    "http://example.com/"
   end
 
   let(:response_headers) do
