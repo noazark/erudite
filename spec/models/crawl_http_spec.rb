@@ -23,7 +23,7 @@ describe CrawlHTTP do
   end
 
   before do
-    Timecop.freeze
+    Timecop.freeze Time.local(2012)
 
     Resque.queues.each do |queue|
       Resque.remove_queue(queue)
