@@ -1,13 +1,6 @@
 - title "documents"
 
-%h2= "Documents #{@documents.total_count}"
-%p
+%nav
   = link_to 'New Document', new_document_path
 
-%br
-
 = render partial: 'list_item', collection: @documents
-
-%br
-
-= paginate @documents

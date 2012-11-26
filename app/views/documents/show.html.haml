@@ -1,17 +1,6 @@
-- title @document.title
+- title @document.uri
 
-%h2= @document.title
-%nav
-  = link_to 'Edit', edit_document_path(@document)
+%h2= link_to @document.uri, @document.uri.to_s, target: '_blank'
+= link_to 'Destroy', @document, :confirm => 'Are you sure?', :method => :delete
 
-%p= link_to @document.uri, @document.uri, target: '_blank'
-
-%h3= "Links #{@document.links.length}"
-%p
-  - @document.links.each do |link|
-    = link_to link, link
-
-%h3= "Contents #{@document.contents.length}"
-%p
-  - @document.contents.each do |content|
-    %a= content
+%pre= @document.body

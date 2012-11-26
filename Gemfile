@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2.0'
 
 gem "mongoid", "~> 3.0.0"
-gem "devise", "~> 2.1.0"
 
 gem "resque", require: "resque/server"
 gem "nokogiri"

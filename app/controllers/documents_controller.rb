@@ -2,7 +2,7 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.json
   def index
-    @documents = Document.crawled.page(params[:page])
+    @documents = Document.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class DocumentsController < ApplicationController
   # GET /documents/1
   # GET /documents/1.json
   def show
-    @document = Document.find(params[:id])
+    @document = Document.find_by(slug: params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -32,42 +32,18 @@ class DocumentsController < ApplicationController
     end
   end
 
-  # GET /documents/1/edit
-  def edit
-    @document = Document.find(params[:id])
-  end
-
   # POST /documents
   # POST /documents.json
   def create
-    @document = Document.new(params[:document])
-
     respond_to do |format|
+      @document = Document.new params[:document]
+
       if @document.valid?
         Resque.enqueue(Cache, @document.uri)
-        format.html { redirect_to @document, notice: 'Document has been added to queue.' }
+        format.html { redirect_to documents_path, notice: 'Document has been added to queue.' }
         format.json { render json: @document, status: :created, location: @document }
       else
         format.html { render action: "new" }
-        format.json { render json: @document.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PUT /documents/1
-  # PUT /documents/1.json
-  def update
-    @document = Document.find(params[:id])
-    @document.attributes = params[:document]
-
-    respond_to do |format|
-      if @document.valid?
-        Resque.enqueue(Cache, @document.uri, 1, true)
-        format.html { redirect_to @document, notice: 'Document has been added to queue.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @document.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -75,7 +51,7 @@ class DocumentsController < ApplicationController
   # DELETE /documents/1
   # DELETE /documents/1.json
   def destroy
-    @document = Document.find(params[:id])
+    @document = Document.find_by(slug: params[:id])
     @document.destroy
 
     respond_to do |format|
