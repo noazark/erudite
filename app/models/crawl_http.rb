@@ -1,10 +1,7 @@
 class CrawlHTTP
 
-  class MaxDepthError < Exception
-  end
-
-  def self.perform(uri, depth=1)
-    crawl_document(uri, depth)
+  def self.perform(uri)
+    crawl_document(uri)
   end
 
   def self.links(page)
@@ -20,24 +17,17 @@ class CrawlHTTP
 
 private
 
-  def self.crawl_document(uri, depth)
+  def self.crawl_document(uri)
     document = Document.find uri
 
     page = Nokogiri::HTML(document.body)
 
-    links(page).each do |link|
-      normalized_link = normalize_link link, uri
-      unless depth >= 3
-        Resque.enqueue(Cache, normalized_link, depth.next)
-      else
-        raise MaxDepthError.new, "You have reached the end of the rainbow."
-      end
-    end
-
     document[:crawled_at] = Time.now
     document.save
 
-    document
+    links(page).map do |link|
+      normalize_link link, uri
+    end
   end
 
 end

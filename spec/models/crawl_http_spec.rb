@@ -35,7 +35,9 @@ describe CrawlHTTP do
   end
 
   it "updates the crawl timestamp" do
-    CrawlHTTP.perform(uri).crawled_at.should eq Time.now
+    CrawlHTTP.perform(uri)
+    cached_document.reload
+    cached_document.crawled_at.should eq Time.now
   end
   
   it "finds all the links on a page" do
@@ -63,26 +65,9 @@ describe CrawlHTTP do
       .should eq 'http://ahh.com/search?q=Show%20me%20the%20money'
   end
 
-  it "spawns cache workers for each link found" do
-    CrawlHTTP.perform(uri)
-    Resque.size(:cache_queue).should eq 1
-  end
-
-  it "increments depth of spawns" do
-    CrawlHTTP.perform(uri, 2)
-    Resque.pop(:cache_queue)['args'][1].should eq 3
-  end
-
   it "normalizes uri for spawn" do
     Document.create uri: 'http://example.com/another', body: '<a href="/sup"></a>'
-    CrawlHTTP.perform('http://example.com/another')
-    Resque.pop(:cache_queue)['args'][0].should eq 'http://example.com/sup'
-  end
-
-  it "raises an error if the maximum depth has been reached" do
-    expect do
-      CrawlHTTP.perform(uri, 3)
-    end.to raise_error CrawlHTTP::MaxDepthError
+    CrawlHTTP.perform('http://example.com/another').pop.should eq 'http://example.com/sup'
   end
 
 end
