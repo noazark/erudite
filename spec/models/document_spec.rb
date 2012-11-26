@@ -25,9 +25,24 @@ describe Document do
   it "requires a valid uri" do
     Document.new(uri: 'what is this?').should_not be_valid
   end
+  
+  describe "#eligible_for_cache?" do
 
-  it "is always eligible for cache" do
-    subject.eligible_for_cache?.should be_true
+    it "true when the document has never been cached" do
+      subject.delete(:cached_at)
+      subject.eligible_for_cache?.should be_true
+    end
+    
+    it "true when the document should be cached" do
+      subject[:cached_at] = 4.days.ago
+      subject.eligible_for_cache?.should be_true
+    end
+    
+    it "false when the document should not be cached" do
+      subject[:cached_at] = Time.now
+      subject.eligible_for_cache?.should be_false
+    end
+
   end
 
 end

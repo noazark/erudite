@@ -14,7 +14,6 @@ private
 
   def self.cache_document(uri)
     document = Document.find_or_initialize_by uri: uri
-    document = document.becomes HTTPDocument
 
     if document.eligible_for_cache?
       response = fetch(uri)
